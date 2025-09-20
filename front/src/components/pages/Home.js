@@ -4,6 +4,7 @@ import React from 'react';
 import FileUploader from '../utils/FileUploader';
 
 export default function Home() {
+
   return (
     <Box justifyItems={"center"}>
       <Typography variant='h4' gutterBottom >
@@ -12,9 +13,7 @@ export default function Home() {
       <Typography>
         drop a file!
       </Typography>
-      <FileUploader onUpload={file => {
-        //file upload via HTTP post
-      }} ></FileUploader>
+      <FileUploader url="http://localhost:5000/binary"></FileUploader>
     </Box>
   );
 }

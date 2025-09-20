@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import axios from 'axios';
 import {
   Box,
   Button,
@@ -13,7 +14,7 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import CloseIcon from "@mui/icons-material/Close";
 
-export default function FileUploader({ onUpload }) {
+export default function FileUploader({ url }) {
   const [file, setFile] = useState(null);
 
   const formatBytes = (bytes) => {
@@ -46,20 +47,16 @@ export default function FileUploader({ onUpload }) {
 
   const handleSubmit = async () => {
     if (!file) return;
-    // if parent passed onUpload, call it with the file
-    if (typeof onUpload === "function") {
-      try {
-        await onUpload(file);
-      } catch (err) {
-        // swallow - parent should handle errors
-        // could set local error state here if desired
-        console.error(err);
-      }
-    } else {
-      // default action: demo upload (replace with real upload)
-      console.log("Submitting file:", file);
-      // small UX feedback
-      alert(`Submitting "${file.name}" (${formatBytes(file.size)})`);
+    console.log("Submitting file:", url);
+    alert(`Submitting "${file.name}" (${formatBytes(file.size)})`);
+    const formData = new FormData();
+    formData.append('binary', file); 
+    try {
+      const response = await axios.post(url, formData);
+      console.log('File uploaded successfully:', response.data);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('File upload failed!');
     }
   };
 
